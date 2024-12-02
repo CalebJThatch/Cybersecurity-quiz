@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff; /* Light blue background */
+            color: #1e293b; /* Navy blue for text */
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #quiz-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff; /* White card background */
+            border: 2px solid #3b82f6; /* Blue border */
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: #3b82f6; /* Bright blue for title */
+        }
+
+        #author {
+            font-size: 0.9rem;
+            color: #64748b; /* Soft gray-blue for attribution */
+            margin-bottom: 20px;
+        }
+
+        .question {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .answers button {
+            background: #3b82f6; /* Bright blue button */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            margin: 5px 0;
+            cursor: pointer;
+            font-size: 1rem;
+            width: 100%;
+            text-align: left;
+            transition: background-color 0.2s ease;
+        }
+
+        .answers button:hover {
+            background: #2563eb; /* Darker blue on hover */
+        }
+
+        #result {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        #restart {
+            display: none;
+            background: #1e40af; /* Navy blue restart button */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        #restart:hover {
+            background: #1e3a8a; /* Darker navy blue on hover */
+        }
+    </style>
+</head>
+<body>
+    <div id="quiz-container">
+        <h1>Cybersecurity Quiz</h1>
+        <div id="author">Created by Caleb Thatcher</div>
+        <div id="quiz"></div>
+        <p id="result"></p>
+        <button id="restart" onclick="restartQuiz()">Restart Quiz</button>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "What is the main purpose of a firewall?",
+                options: [
+                    "To encrypt data",
+                    "To filter incoming and outgoing network traffic",
+                    "To prevent phishing",
+                    "To block websites"
+                ],
+                answer: 1
+            },
+            {
+                question: "Which of these is NOT a type of malware?",
+                options: ["Virus", "Worm", "Cookie", "Trojan"],
+                answer: 2
+            },
+            {
+                question: "What does two-factor authentication add to security?",
+                options: [
+                    "A second password",
+                    "A combination of username and password",
+                    "An additional verification step",
+                    "Biometric scanning only"
+                ],
+                answer: 2
+            },
+            {
+                question: "What is phishing?",
+                options: [
+                    "A technique to catch fish",
+                    "An attempt to acquire sensitive information by impersonating a trustworthy entity",
+                    "A type of firewall",
+                    "Encrypting data for secure communication"
+                ],
+                answer: 1
+            },
+            {
+                question: "Which of the following is a strong password?",
+                options: [
+                    "Password123",
+                    "12345678",
+                    "MyBirthday",
+                    "7h!sI$AStr0ngP@$$w0rd"
+                ],
+                answer: 3
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        const quizContainer = document.getElementById("quiz");
+        const resultEl = document.getElementById("result");
+        const restartBtn = document.getElementById("restart");
+
+        function loadQuestion() {
+            if (currentQuestion < quizData.length) {
+                const question = quizData[currentQuestion];
+                quizContainer.innerHTML = `
+                    <div class="question">${question.question}</div>
+                    <div class="answers">
+                        ${question.options
+                            .map(
+                                (option, index) =>
+                                    `<button onclick="checkAnswer(${index})">${option}</button>`
+                            )
+                            .join("")}
+                    </div>
+                `;
+            } else {
+                endQuiz();
+            }
+        }
+
+        function checkAnswer(selected) {
+            const question = quizData[currentQuestion];
+            if (selected === question.answer) {
+                score++;
+            }
+            currentQuestion++;
+            loadQuestion();
+        }
+
+        function endQuiz() {
+            quizContainer.innerHTML = "";
+            resultEl.textContent = `You scored ${score} out of ${quizData.length}!`;
+            restartBtn.style.display = "block";
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            resultEl.textContent = "";
+            restartBtn.style.display = "none";
+            loadQuestion();
+        }
+
+        window.onload = loadQuestion;
+    </script>
+</body>
+</html>
